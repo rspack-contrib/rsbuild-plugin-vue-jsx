@@ -1,16 +1,53 @@
+import { createRequire } from 'node:module';
 import type { RsbuildPlugin } from '@rsbuild/core';
+import { modifyBabelLoaderOptions } from '@rsbuild/plugin-babel';
+import type { VueJSXPluginOptions } from '@vue/babel-plugin-jsx';
 
-export type pluginVueJsxOptions = {
-  foo?: string;
-  bar?: boolean;
+const require = createRequire(import.meta.url);
+
+export type PluginVueJsxOptions = {
+  /**
+   * Options passed to `@vue/babel-plugin-jsx`.
+   * @see https://github.com/vuejs/babel-plugin-jsx
+   */
+  vueJsxOptions?: VueJSXPluginOptions;
 };
 
-export const pluginVueJsx = (
-  options: pluginVueJsxOptions = {},
-): RsbuildPlugin => ({
-  name: 'plugin-example',
+export const PLUGIN_VUE_JSX_NAME = 'rsbuild:vue-jsx';
 
-  setup() {
-    console.log('Hello Rsbuild!', options);
-  },
-});
+export function pluginVueJsx(options: PluginVueJsxOptions = {}): RsbuildPlugin {
+  return {
+    name: PLUGIN_VUE_JSX_NAME,
+
+    setup(api) {
+      api.modifyBundlerChain(
+        async (chain, { CHAIN_ID, environment, isProd, target }) => {
+          const { config } = environment;
+
+          modifyBabelLoaderOptions({
+            chain,
+            CHAIN_ID,
+            modifier: (babelOptions) => {
+              babelOptions.plugins ??= [];
+              babelOptions.plugins.push([
+                require.resolve('@vue/babel-plugin-jsx'),
+                options.vueJsxOptions || {},
+              ]);
+
+              const usingHMR = !isProd && config.dev.hmr && target === 'web';
+
+              if (usingHMR) {
+                babelOptions.plugins ??= [];
+                babelOptions.plugins.push([
+                  require.resolve('babel-plugin-vue-jsx-hmr'),
+                ]);
+              }
+
+              return babelOptions;
+            },
+          });
+        },
+      );
+    },
+  };
+}
