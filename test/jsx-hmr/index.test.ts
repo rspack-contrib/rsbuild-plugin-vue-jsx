@@ -3,14 +3,19 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { type Page, expect, test } from '@playwright/test';
 import { createRsbuild, loadConfig } from '@rsbuild/core';
-import { pluginVueJsx } from '../../src';
+import { getRandomPort } from '../helper';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 test('should render', async ({ page }) => {
   const rsbuild = await createRsbuild({
     cwd: __dirname,
-    rsbuildConfig: (await loadConfig({ cwd: __dirname })).content,
+    rsbuildConfig: {
+      ...(await loadConfig({ cwd: __dirname })).content,
+      server: {
+        port: getRandomPort(),
+      },
+    },
   });
 
   const { server, urls } = await rsbuild.startDevServer();
@@ -32,7 +37,12 @@ test('should render', async ({ page }) => {
 test('should update', async ({ page }) => {
   const rsbuild = await createRsbuild({
     cwd: __dirname,
-    rsbuildConfig: (await loadConfig({ cwd: __dirname })).content,
+    rsbuildConfig: {
+      ...(await loadConfig({ cwd: __dirname })).content,
+      server: {
+        port: getRandomPort(),
+      },
+    },
   });
 
   const { server, urls } = await rsbuild.startDevServer();
@@ -74,7 +84,12 @@ test.describe('vue jsx hmr', () => {
     page = await browser.newPage();
     const rsbuild = await createRsbuild({
       cwd: __dirname,
-      rsbuildConfig: (await loadConfig({ cwd: __dirname })).content,
+      rsbuildConfig: {
+        ...(await loadConfig({ cwd: __dirname })).content,
+        server: {
+          port: getRandomPort(),
+        },
+      },
     });
 
     const result = await rsbuild.startDevServer();
@@ -172,6 +187,7 @@ test.describe('vue jsx hmr', () => {
   });
 
   // not pass
+  // see https://github.com/web-infra-dev/rsbuild/pull/2018
   test.skip('hmr: vue script lang=jsx', async () => {
     await page.locator('.script').click();
     await expect(page.locator('.script')).toHaveText('script 5');
