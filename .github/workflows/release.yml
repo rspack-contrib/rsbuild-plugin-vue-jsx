@@ -38,6 +38,8 @@ jobs:
 
       - name: Publish
         uses: JS-DevTools/npm-publish@v3
+        with:
+          token: empty
 
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
