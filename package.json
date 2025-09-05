@@ -40,7 +40,7 @@
     "babel-plugin-vue-jsx-hmr": "^1.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "^2.2.3",
     "@playwright/test": "^1.55.0",
     "@rsbuild/core": "^1.5.3",
     "@rsbuild/plugin-vue": "1.1.2",
