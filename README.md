@@ -2,7 +2,7 @@
 
 Provides support for Vue 3 JSX / TSX syntax. This plugin internally integrates [@vue/babel-plugin-jsx](https://github.com/vuejs/babel-plugin-jsx).
 
-> For Vue 2 projects, use [@rsbuild/plugin-vue2-jsx](https://github.com/rspack-contrib/rsbuild-plugin-vue2-jsx).
+> For Vue 2 projects, use [@rsbuild/plugin-vue2-jsx](https://github.com/rstackjs/rsbuild-plugin-vue2-jsx).
 
 <p>
   <a href="https://npmjs.com/package/@rsbuild/plugin-vue-jsx">
