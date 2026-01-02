@@ -41,7 +41,7 @@ export default {
 
 After registering the plugin, you can use Vue's [JSX / TSX syntax](https://github.com/vuejs/babel-plugin-jsx) in `.jsx`, `.tsx`, and `.vue` files.
 
-Since the Vue JSX plugin relies on Babel for compilation, you need to additionally add the [@rsbuild/plugin-babel](https://rsbuild.dev/plugins/list/plugin-babel).
+Since the Vue JSX plugin relies on Babel for compilation, you need to additionally add the [@rsbuild/plugin-babel](https://rsbuild.rs/plugins/list/plugin-babel).
 
 Babel compilation will introduce extra overhead, in the example above, we use `include` to match `.jsx` and `.tsx` files, thereby reducing the performance cost brought by Babel.
 
