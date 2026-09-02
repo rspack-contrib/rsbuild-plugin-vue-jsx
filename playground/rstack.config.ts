@@ -1,9 +1,10 @@
-import { defineConfig } from '@rsbuild/core';
+// Configuration guide: https://rstack.rs/config
 import { pluginBabel } from '@rsbuild/plugin-babel';
 import { pluginVue } from '@rsbuild/plugin-vue';
-import { pluginVueJsx } from '../src';
+import { define } from 'rstack';
+import { pluginVueJsx } from '../src/index.ts';
 
-export default defineConfig({
+define.app({
   plugins: [
     pluginVue(),
     pluginVueJsx(),
